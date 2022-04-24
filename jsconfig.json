@@ -15,5 +15,10 @@
       "dom.iterable",
       "scripthost"
     ]
-  }
+  },
+  //自行加入,配置别名，除了这两个文件夹
+  "exclude": [
+    "node_moudules",
+    "dist"
+  ]
 }
