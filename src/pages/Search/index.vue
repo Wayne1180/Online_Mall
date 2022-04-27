@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h1>我是搜索页面</h1>
-    <h1>params参数{{ $route.params.keyword }}</h1>
-    <h1>query参数{{ $route.query.k }}</h1>
+    <!-- 这是Search模块 -->
+    <typeNav />
   </div>
 </template>
 
@@ -12,5 +11,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>
