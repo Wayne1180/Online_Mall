@@ -14,6 +14,11 @@ import store from '@/store'
 // import { reqCategoryList } from '@/api'
 // reqCategoryList();
 
+//引入mockServer.js
+import '@/mock/mockServe'
+//引入swiper样式
+import "swiper/css/swiper.css"
+
 Vue.config.productionTip = false
 
 new Vue({
