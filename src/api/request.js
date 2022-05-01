@@ -3,6 +3,8 @@ import axios from "axios"
 //引入进度条
 import nprogress from "nprogress";
 //start:进度条开始 done：进度条结束
+//从当前模块中引入store
+import store from '@/store'
 //引入进度条的样式
 import "nprogress/nprogress.css"
 

@@ -6,11 +6,7 @@
         <h3 class="fl">{{ list.name }}</h3>
         <div class="fr">
           <ul class="nav-tabs clearfix">
-            <li
-              class="active"
-              v-for="(nav, index) in list.navList"
-              :key="index"
-            >
+            <li v-for="(nav, index) in list.navList" :key="index">
               <a href="#tab1" data-toggle="tab">{{ nav.text }}</a>
             </li>
           </ul>
@@ -64,20 +60,20 @@ export default {
   name: "",
   props: ["list"],
   //组件挂在完毕
-  mounted() {
-    var mySwiper = new Swiper(this.$refs.cur, {
-      loop: true,
-      pagination: {
-        el: ".swiper-pagination",
-        //点击小球的时候也切换图片
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  },
+  // mounted() {
+  //   var mySwiper = new Swiper(this.$refs.cur, {
+  //     loop: true,
+  //     pagination: {
+  //       el: ".swiper-pagination",
+  //       //点击小球的时候也切换图片
+  //       clickable: true,
+  //     },
+  //     navigation: {
+  //       nextEl: ".swiper-button-next",
+  //       prevEl: ".swiper-button-prev",
+  //     },
+  //   });
+  // },
 };
 </script>
 

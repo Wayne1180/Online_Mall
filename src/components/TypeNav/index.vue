@@ -91,7 +91,7 @@ import { mapState } from "vuex";
 import throttle from "lodash/throttle";
 
 export default {
-  name: "TypeNav",
+  name: "typeNav",
 
   data() {
     return {
@@ -148,7 +148,7 @@ export default {
       //如果标签身上拥有categoryname 一定是a标签
       if (categoryname) {
         //整理路由跳转的参数
-        let location = { name: "search" };
+        let loction = { name: "search" };
         let query = { categoryName: categoryname };
 
         //一级分类，二级分类，三级分类的a标签
@@ -162,11 +162,11 @@ export default {
 
         //判断：如果路由跳转的时候，带有params参数，捎带传递过去
         if (this.$route.params) {
-          location.params = this.$route.params;
+          loction.params = this.$route.params;
           //动态给location配置对象添加query属性
-          location.query = query;
+          loction.query = query;
           //路由跳转
-          this.$router.push(location);
+          this.$router.push(loction);
         }
       }
     },

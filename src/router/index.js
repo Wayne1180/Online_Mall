@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 //使用插件
 Vue.use(VueRouter)
+import store from "@/store"
 //引入路由组件
 import Home from '@/pages/Home'
 import Search from '@/pages/Search'

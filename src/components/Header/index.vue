@@ -62,25 +62,6 @@ export default {
   methods: {
     //搜索按钮的回调函数，跳转到search路由
     goSearch() {
-      //路由传递参数
-      // this.$router.push(
-      //   "/search/" + this.keyword + "?k=" + this.keyword.toUpperCase()
-      // );
-      //第二种：模板字符串
-      // this.$router.push(
-      //   `/search/${this.keyword}?k=${this.keyword.toUpperCase()}`
-      // );
-      //第三种：对象
-      // this.$router.push(
-      //   {
-      //     name: "search",
-      //     params: { keyword: this.keyword },
-      //   },
-      //   () => {},
-      //   () => {}
-      // // );
-      // console.log(this.$router);
-
       //代表的是如果有query参数也带过去
       if (this.$route.query) {
         let location = {
@@ -91,6 +72,12 @@ export default {
         this.$router.push(location);
       }
     },
+  },
+  mounted() {
+    //通过全局事件总线清除关键字
+    this.$bus.$on("clear", () => {
+      this.keyword = "";
+    });
   },
 };
 </script>
