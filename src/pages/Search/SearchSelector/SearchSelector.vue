@@ -19,15 +19,22 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
+    <!-- 平台售卖属性的地方 -->
     <div
       class="type-wrap"
       v-for="(attr, index) in attrsList"
       :key="attr.attrId"
     >
+      <!-- 平台售卖属性：比如说颜色 -->
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue, index) in attr.attrValueList" :key="attrValue">
+          <!-- 平台相应售卖的属性的属性值 -->
+          <li
+            v-for="(attrValue, index) in attr.attrValueList"
+            :key="attrValue"
+            @click="attrInfo(attr, attrValue)"
+          >
             <a>{{ attrValue }}</a>
           </li>
         </ul>
@@ -49,6 +56,11 @@ export default {
     //自定义事件传数据，子传父
     tradeMatkHandler(trademark) {
       this.$emit("trademarkInfo", trademark);
+    },
+    //平台售卖属性值的点击事件
+    attrInfo(attr, attrValue) {
+      //["属性ID：属性值：属性名"]
+      this.$emit("attrInfo", attr, attrValue);
     },
   },
 };

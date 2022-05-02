@@ -25,35 +25,50 @@
               {{ searchParams.trademark.split(":")[1]
               }}<i @click="removeTradeMark">×</i>
             </li>
+            <!-- 平台的售卖的属性值展示 -->
+            <li
+              class="with-x"
+              v-for="(attrValue, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attrValue.split(":")[1] }}
+              <i @click="removeAttr">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo" />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
-              <!-- 价格结构 -->
+              <!-- 排序结构 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder(1)">
+                  <a
+                    >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{
+                        'icon-sort-up': isAsc,
+                        'icon-sort-down': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder(2)">
+                  <a
+                    >价格<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{
+                        'icon-sort-up': isAsc,
+                        'icon-sort-down': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -104,7 +119,15 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
+          <!-- 分页器 测试阶段，这里的数据都是假的-->
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
+          <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
                 <li class="prev disabled">
@@ -132,7 +155,7 @@
               </ul>
               <div><span>共10页&nbsp;</span></div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -158,12 +181,12 @@ export default {
         categoryName: "",
         //关键字
         keyword: "",
-        //排序
-        order: "",
+        //排序 初始的状态应该是综合降序
+        order: "1:desc",
         //分页器用的：代表的是当前是第几页
-        pageNo: 1,
+        pageNo: 9,
         //代表的是每一页展示数据的个数
-        pageSize: 3,
+        pageSize: 10,
         //平台售卖属性操作带的参数
         props: [],
         //品牌
@@ -227,10 +250,73 @@ export default {
       this.searchParams.trademark = undefined;
       this.getData();
     },
+    //收集平台属性地方的回调函数（自定义事件）
+    attrInfo(attr, attrValue) {
+      console.log(attr, attrValue);
+      //参数格式整理好
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      //数组去重
+      if (this.searchParams.props.indexOf(props) == -1)
+        this.searchParams.props.push(props);
+
+      //再次发请求
+      this.getData();
+    },
+    removeAttr(index) {
+      //再次整理参数
+      this.searchParams.props.splice(index, 1);
+      //再次发请求
+      this.getData();
+    },
+    //排序的操作
+    changeOrder(flag) {
+      //flag形参：他是一个标记，代表用户点击的是综合（1）价格（2）[用户点击的时候传递进来的]
+      let originOrder = this.searchParams.order;
+      //这里获取到的是最开始的状态
+      let originFlag = this.searchParams.order.split(":")[0];
+      let orginSort = this.searchParams.order.split(":")[1];
+      //准备一个新的order属性值
+      let newOrder = "";
+      //这个语句我能确定点击的一定是综合
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${orginSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        //点击的是价格
+        newOrder = `${flag}:${"desc"}`;
+      }
+      //将新的order赋予searchParams
+      this.searchParams.order = newOrder;
+      //再次发请求
+      this.getData();
+    },
+    //自定义事件的回调函数---获取当前第几页
+    getPageNo(pageNo) {
+      //整理带给服务器参数
+      this.searchParams.pageNo = pageNo;
+      //再次发请求
+      this.getData();
+    },
   },
   computed: {
     //mapGetters里面的写法：传递的是数组，因为getters计算是没有划分模块
     ...mapGetters(["goodsList"]),
+    //判断是否为1
+    isOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") != -1;
+    },
+    isAsc() {
+      return this.searchParams.order.indexOf("asc") != -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
+    //获取search模块展示产品一共多少数据
+    ...mapState({
+      total: (state) => state.search.searchList.total,
+    }),
   },
   watch: {
     //监听路由的信息是否发生变化，如果发生变化，再次发起请求
