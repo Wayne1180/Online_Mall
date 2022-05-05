@@ -12,7 +12,7 @@ import "nprogress/nprogress.css"
 
 //1.利用axios对象的方法create，去创建一个axios实例
 //2.request就是axios，只不过稍微配置一下
-const requests = axios.create({
+let requests = axios.create({
     //配置对象
     //基础路径，发请求的时候，路径当中会出现api
     baseURL: "/api",
@@ -23,6 +23,10 @@ const requests = axios.create({
 requests.interceptors.request.use((config) => {
     //config:配置对象，对象里面有一个属性很重要，headers请求头
     //进度条开始动
+    if (store.state.detail.uuid_token) {
+        //给请求头添加一个字段，和后台沟通过的
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
     nprogress.start();
     return config
 })

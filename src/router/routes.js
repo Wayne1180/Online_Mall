@@ -6,6 +6,8 @@ import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 export default [
     {
         path: "/detail/:skuid",
@@ -42,9 +44,20 @@ export default [
         component: Register,
         meta: { show: false }
     },
+    {
+        path: "/addcartsuccess",
+        name: 'addcartsuccess',
+        component: AddCartSuccess,
+        meta: { show: true }
+    },
+    {
+        path: "/shopcart",
+        component: ShopCart,
+        meta: { show: true }
+    },
     //重定向，在项目跑起来的时候，访问/，立马让他定向到首页
     {
         path: '/',
         redirect: "/home"
-    }
+    },
 ]

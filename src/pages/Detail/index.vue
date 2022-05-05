@@ -107,12 +107,23 @@
 
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!-- 以前咱们的路由跳转：从A路由跳转到B路由，这里在加入购物车，进行路由跳转之前，发请求把你购买的产品的信息通过请求的形式通知服务器，服务器进行相应的存储 -->
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -357,7 +368,12 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-
+  data() {
+    return {
+      //购买产品的个数
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -382,6 +398,42 @@ export default {
       });
       //点击那个售卖属性值
       saleAttrValue.isChecked = 1;
+    },
+    changeSkuNum(event) {
+      //用户输入进来的文本*1
+      let value = event.target.value * 1;
+      console.log(value);
+      //如果用户输入进来的非法，出现nan或小于1
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1;
+      } else {
+        //正常大于1【整数】
+        this.skuNum = parseInt(value);
+      }
+    },
+    //加入购物车的回调函数
+    async addShopcar() {
+      //派发action
+      //1.发请求，将产品加入到数据库（通知服务器）
+      try {
+        await this.$store.dispatch("addOrUpdateShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        //路由跳转
+        //在路由跳转的时候还需要将产品信息带给下一级的路由组件
+        //一些简单的数据skuNum，通过query形式给路由组件传递过去
+        //产品信息的数据【比较复杂：skuinfo】，通过会话存储（不持久化，会话结束数据在消失）
+        //本地存储|绘画存储，一般存储的是字符串
+        //对象转字符串
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
+        this.$router.push({ name: "addcartsuccess" });
+      } catch (error) {
+        alert(error.message);
+      }
+
+      //2.服务器存储成功，进行路由跳转传递参数
+      //3.失败，给用户进行提示
     },
   },
 };
