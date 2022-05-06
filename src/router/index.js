@@ -33,10 +33,53 @@ VueRouter.prototype.replace = function (location, resole, reject) {
     }
 }
 //配置路由
-export default new VueRouter({
+let router = new VueRouter({
     //配置路由
     routes,
     scrollBehavior(to, from, savedPosition) {
         return { y: 0 }
     }
 })
+
+//全局守卫：前置守卫（在路由跳转之前进行判断）
+router.beforeEach(async (to, from, next) => {
+    //to:可以获取到你要跳转到哪个路由
+    //from：可以获取到你从哪个路由而来的信息
+    //next：放行函数 next()放行 next(path)放行到指定路由 next(false) 
+    // next()
+    //用户登录了，才会有token，未登录一定不会有token
+    let token = store.state.user.token
+    //用户信息
+    let name = store.state.user.userInfo.name
+    if (token) {
+        //用户已经登陆了，还想去login，不放行
+        if (to.path == '/login') {
+            next('/home')
+        } else {
+            //登陆了，但是去的不是login
+            //如果用户名已有
+            if (name) {
+                next()
+            } else {
+                //没有用户信息，派发action，让仓库存储用户信息再跳转
+                try {
+                    //获取用户信息成功
+
+                    await store.dispatch('getUserInfo')
+                    next()
+                } catch (error) {
+                    //token失效，获取不到用户的信息
+                    //清除token
+                    await store.dispatch('userLogout')
+                    next('/login')
+                }
+            }
+
+        }
+    } else {
+        //未登录暂时没有处理完毕
+        next()
+    }
+})
+
+export default router
