@@ -1,10 +1,9 @@
 //路由配置的信息
-
 //引入路由组件
 import Home from '@/pages/Home'
 import Search from '@/pages/Search'
-import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import Login from '@/pages/Login'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
@@ -34,8 +33,8 @@ export default [
     },
     {
         path: "/login",
-        compoent: Login,
-        meta: { show: false }
+        component: Login,
+        meta: { show: true }
     },
 
 
