@@ -67,7 +67,7 @@
             </div>
             <div class="choose-order">
                 <!-- 分页器 -->
-                <Pagination :pageNo="pageNo" :pageSize="limit" :total="myOrder.total" :continues="5"
+                <Pagination :pageNo="page" :pageSize="limit" :total="myOrder.total" :continues="5"
                     @getPageNo="getPageNo" />
             </div>
         </div>

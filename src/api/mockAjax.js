@@ -30,9 +30,9 @@ requests.interceptors.response.use((res) => {
     //成功的回调函数：服务器相应数据回来以后，响应拦截器可以检测到，可以做一些事情
     nprogress.done
     return res.data
-}, (error) => {
+}, (err) => {
     //响应失败的回调函数
-    return Promise.reject(new Error('false'))
+    alert("服务器响应数据失败")
 })
 
 //对外暴露

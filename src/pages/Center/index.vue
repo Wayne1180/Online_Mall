@@ -56,8 +56,6 @@
         <!-- 右侧内容 -->
         <!-- 路由组件出口的位置 -->
         <router-view></router-view>
-        <groupOrder />
-        <myOrder />
       </div>
     </div>
   </div>
