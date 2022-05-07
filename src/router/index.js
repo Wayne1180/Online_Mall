@@ -53,7 +53,7 @@ router.beforeEach(async (to, from, next) => {
     let name = store.state.user.userInfo.name
     if (token) {
         //用户已经登陆了，还想去login，不放行
-        if (to.path == '/login') {
+        if (to.path == '/login' || to.path == '/register') {
             next('/home')
         } else {
             //登陆了，但是去的不是login
@@ -78,7 +78,16 @@ router.beforeEach(async (to, from, next) => {
         }
     } else {
         //未登录暂时没有处理完毕
-        next()
+        //未登录不能去交易相关，不能去个人中心
+        //未登录去上面的这些路由--登录
+        //去的不是上面这些路由
+        let toPath = to.path
+        if (toPath == '/trade' || toPath.indexOf('/pay') != -1 || toPath.indexOf('/center') != -1) {
+            //把未登录的时候想去而没有去成的信息，存储于地址栏中【路由】
+            next('/login?redirect=' + toPath)
+        } else {
+            next()
+        }
     }
 })
 

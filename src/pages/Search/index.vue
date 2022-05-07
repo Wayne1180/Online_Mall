@@ -26,11 +26,7 @@
               }}<i @click="removeTradeMark">×</i>
             </li>
             <!-- 平台的售卖的属性值展示 -->
-            <li
-              class="with-x"
-              v-for="(attrValue, index) in searchParams.props"
-              :key="index"
-            >
+            <li class="with-x" v-for="(attrValue, index) in searchParams.props" :key="index">
               {{ attrValue.split(":")[1] }}
               <i @click="removeAttr">×</i>
             </li>
@@ -47,28 +43,16 @@
               <!-- 排序结构 -->
               <ul class="sui-nav">
                 <li :class="{ active: isOne }" @click="changeOrder(1)">
-                  <a
-                    >综合<span
-                      v-show="isOne"
-                      class="iconfont"
-                      :class="{
-                        'icon-sort-up': isAsc,
-                        'icon-sort-down': isDesc,
-                      }"
-                    ></span
-                  ></a>
+                  <a>综合<span v-show="isOne" class="iconfont" :class="{
+                    'icon-sort-up': isAsc,
+                    'icon-sort-down': isDesc,
+                  }"></span></a>
                 </li>
                 <li :class="{ active: isTwo }" @click="changeOrder(2)">
-                  <a
-                    >价格<span
-                      v-show="isTwo"
-                      class="iconfont"
-                      :class="{
-                        'icon-sort-up': isAsc,
-                        'icon-sort-down': isDesc,
-                      }"
-                    ></span
-                  ></a>
+                  <a>价格<span v-show="isTwo" class="iconfont" :class="{
+                    'icon-sort-up': isAsc,
+                    'icon-sort-down': isDesc,
+                  }"></span></a>
                 </li>
               </ul>
             </div>
@@ -76,15 +60,11 @@
           <!-- 销售产品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li
-                class="yui3-u-1-5"
-                v-for="(good, index) in goodsList"
-                :key="good.id"
-              >
+              <li class="yui3-u-1-5" v-for="(good, index) in goodsList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
-                      <img :src="good.defaultImg" />
+                      <img v-lazy="good.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -94,39 +74,23 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a
-                      target="_blank"
-                      href="item.html"
-                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{ good.title }}</a
-                    >
+                    <a target="_blank" href="item.html" title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{ good.title
+                    }}</a>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
                   </div>
                   <div class="operate">
-                    <a
-                      href="success-cart.html"
-                      target="_blank"
-                      class="sui-btn btn-bordered btn-danger"
-                      >加入购物车</a
-                    >
-                    <a href="javascript:void(0);" class="sui-btn btn-bordered"
-                      >收藏</a
-                    >
+                    <a href="success-cart.html" target="_blank" class="sui-btn btn-bordered btn-danger">加入购物车</a>
+                    <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
                   </div>
                 </div>
               </li>
             </ul>
           </div>
           <!-- 分页器 测试阶段，这里的数据都是假的-->
-          <Pagination
-            :pageNo="searchParams.pageNo"
-            :pageSize="searchParams.pageSize"
-            :total="total"
-            :continues="5"
-            @getPageNo="getPageNo"
-          />
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5"
+            @getPageNo="getPageNo" />
           <!-- <div class="fr page">
             <div class="sui-pagination clearfix">
               <ul>
